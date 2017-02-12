@@ -1,0 +1,45 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="matchHolder"
+            type="app.cricket.prashant.com.cricketapp.viewmodel.ItemViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/item_people"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{matchHolder::onItemClick}"
+        android:background="@drawable/card_backgroung"
+        android:padding="10dp"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/label_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@{matchHolder.teamOne}"
+            android:textColor="@color/pattern_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="mr gary allen" />
+
+        <TextView
+            android:id="@+id/label_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/label_title"
+            android:text="@{matchHolder.matchDate}"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:text="0729-256-147" />
+
+    </RelativeLayout>
+
+
+</layout>
