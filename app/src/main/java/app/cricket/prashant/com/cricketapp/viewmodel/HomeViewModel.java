@@ -17,6 +17,7 @@ import app.cricket.prashant.com.cricketapp.network.ApiClientRequest;
 import app.cricket.prashant.com.cricketapp.network.ApiManager;
 import app.cricket.prashant.com.cricketapp.model.Matches;
 import app.cricket.prashant.com.cricketapp.utils.ApiConstants;
+import app.cricket.prashant.com.cricketapp.view.matches.MainActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +55,7 @@ public class HomeViewModel extends Observable {
         mRecyclerView.set(View.GONE);
         mProgressBar.set(View.VISIBLE);
     }
+
     public void hideProgress() {
         mLabel.set(View.GONE);
         mRecyclerView.set(View.VISIBLE);
@@ -67,12 +69,13 @@ public class HomeViewModel extends Observable {
         apiCall.enqueue(new Callback<Matches>() {
             @Override
             public void onResponse(Call<Matches> call, Response<Matches> response) {
+                ((MainActivity) context).disableSwipeRefreshView();
                 Matches matches = response.body();
-                Log.e("Response",""+response.body().toString());
+                Log.e("Response", "" + response.body().toString());
                 if (response.isSuccessful()) {
                     if (response.code() == ApiConstants.ErrorCodes.NO_CONTENT) {
                         // no content
-                    }else {
+                    } else {
                         hideProgress();
                         setMatchesList(matches.getMatchesList());
                     }
@@ -91,7 +94,8 @@ public class HomeViewModel extends Observable {
 
             @Override
             public void onFailure(Call<Matches> call, Throwable t) {
-                Log.e("Response","Error");
+                Log.e("Response", "Error");
+                ((MainActivity) context).disableSwipeRefreshView();
                 messageLabel.set(context.getString(R.string.error_loading_people));
                 mProgressBar.set(View.GONE);
                 mLabel.set(View.VISIBLE);

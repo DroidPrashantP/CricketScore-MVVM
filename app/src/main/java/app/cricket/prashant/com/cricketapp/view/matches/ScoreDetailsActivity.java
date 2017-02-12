@@ -118,4 +118,6 @@ public class ScoreDetailsActivity extends AppCompatActivity {
             mMatchUniqId = bundle.getInt(ApiConstants.Params.MATCH_UNIQUE_KEY);
         }
     }
+
+
 }

@@ -2,6 +2,7 @@ package app.cricket.prashant.com.cricketapp.view.matches;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import app.cricket.prashant.com.cricketapp.viewmodel.HomeViewModel;
 public class MainActivity extends AppCompatActivity implements Observer {
     private ActivityMainBinding mMainActivityBinding;
     private HomeViewModel mHomeViewModel;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +28,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setupListPeopleView(mMainActivityBinding.listPeople);
         setupObserver(mHomeViewModel);
         mHomeViewModel.fetchData();
+
+        mSwipeRefreshLayout = mMainActivityBinding.swipeRefreshLayout;
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSwipeRefreshLayout.setRefreshing(true);
+                mHomeViewModel.fetchData();
+            }
+        });
     }
 
     private void initDataBinding() {
         mMainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mHomeViewModel = new HomeViewModel(this);
         mMainActivityBinding.setMainViewModel(mHomeViewModel);
+        mHomeViewModel.fetchData();
     }
 
 
@@ -83,4 +95,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return super.onOptionsItemSelected(item);
     }
 
+    public void disableSwipeRefreshView(){
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 }
